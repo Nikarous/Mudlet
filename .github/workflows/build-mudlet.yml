@@ -5,8 +5,8 @@ on:
     tags: [Mudlet-*]
   pull_request:
   workflow_dispatch:
-  schedule:
-    - cron: '0 2 * * *'
+  # schedule:
+  #   - cron: '0 2 * * *'
 
 jobs:
   compile-mudlet:
@@ -24,22 +24,22 @@ jobs:
             qt: '5.14.2'
             deploy: 'deploy'
             run_tests: 'true'
-          - os: ubuntu-latest
-            buildname: 'ubuntu / clang'
-            triplet: x64-linux
-            compiler: clang_64
-            qt: '5.14.2'
-          - os: macos-11
-            buildname: 'macos / c++ tests'
-            triplet: x64-osx
-            compiler: clang_64
-            qt: '5.14.2'
-            deploy: 'deploy'
-          - os: windows-2019
-            buildname: 'windows'
-            triplet: x64-mingw-dynamic
-            # compiler: flag not used in windows pipeline
-            qt: '5.14.2'
+          # - os: ubuntu-latest
+          #   buildname: 'ubuntu / clang'
+          #   triplet: x64-linux
+          #   compiler: clang_64
+          #   qt: '5.14.2'
+          # - os: macos-11
+          #   buildname: 'macos / c++ tests'
+          #   triplet: x64-osx
+          #   compiler: clang_64
+          #   qt: '5.14.2'
+          #   deploy: 'deploy'
+          # - os: windows-2019
+          #   buildname: 'windows'
+          #   triplet: x64-mingw-dynamic
+          #   # compiler: flag not used in windows pipeline
+          #   qt: '5.14.2'
 
     env:
       BOOST_ROOT: ${{github.workspace}}/3rdparty/boost
