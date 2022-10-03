@@ -10,7 +10,7 @@ set -x
 if [ "${TRAVIS_OS_NAME}" = "linux" ] || [ "${RUNNER_OS}" = "Linux" ]; then
   echo "Deploy on Linux."
   docker run --rm \
-    -v "${{github.workspace}}":"${{github.workspace}}" \
+    -v "$GITHUB_WORKSPACE":"$GITHUB_WORKSPACE" \
     -v "$BUILD_FOLDER":"$BUILD_FOLDER" \
     -e BUILD_FOLDER="$BUILD_FOLDER" \
     -e RUNNER_OS="$RUNNER_OS" \
@@ -22,7 +22,7 @@ if [ "${TRAVIS_OS_NAME}" = "linux" ] || [ "${RUNNER_OS}" = "Linux" ]; then
     -e AC_USERNAME="$AC_USERNAME" \
     -e AC_PASSWORD="$AC_PASSWORD" \
     ubuntu:18.04 \
-    "${{github.workspace}}"/CI/travis.linux.after_success.sh;
+    "$GITHUB_WORKSPACE"/CI/travis.linux.after_success.sh;
   echo $?
   echo "^ worked?"
 elif [ "${TRAVIS_OS_NAME}" = "osx" ]  || [ "${RUNNER_OS}" = "macOS" ]; then
