@@ -8,8 +8,21 @@ if { [ -n "$TRAVIS_REPO_SLUG" ] && [ "${TRAVIS_REPO_SLUG}" != "Mudlet/Mudlet" ];
 fi
 
 if [ "${TRAVIS_OS_NAME}" = "linux" ] || [ "${RUNNER_OS}" = "Linux" ]; then
-  echo Deploy on Linux.
-  . CI/travis.linux.after_success.sh;
+  echo "Deploy on Linux."
+  docker run --rm \
+    -v "${{github.workspace}}":"${{github.workspace}}" \
+    -v "$BUILD_FOLDER":"$BUILD_FOLDER" \
+    -e BUILD_FOLDER="$BUILD_FOLDER" \
+    -e RUNNER_OS="$RUNNER_OS" \
+    -e DEPLOY="$DEPLOY" \
+    -e DBLSQD_USER="$DBLSQD_USER" \
+    -e DBLSQD_PASS="$DBLSQD_PASS" \
+    -e DEPLOY_KEY_PASS="$DEPLOY_KEY_PASS" \
+    -e MACOS_SIGNING_PASS="$MACOS_SIGNING_PASS" \
+    -e AC_USERNAME="$AC_USERNAME" \
+    -e AC_PASSWORD="$AC_PASSWORD" \
+    ubuntu:18.04 \
+    "${{github.workspace}}"/CI/travis.linux.after_success.sh;
   echo $?
   echo "^ worked?"
 elif [ "${TRAVIS_OS_NAME}" = "osx" ]  || [ "${RUNNER_OS}" = "macOS" ]; then
@@ -21,7 +34,7 @@ if [ "${TRAVIS_PULL_REQUEST}" != "false" ]; then
   prId=" ,#${TRAVIS_PULL_REQUEST}"
 fi
 
-if [ ! -z "${DEPLOY_URL}" ]; then
+if [ -n "${DEPLOY_URL}" ]; then
   curl \
     --data-urlencode "message=Deployed Mudlet \`${VERSION}${MUDLET_VERSION_BUILD}\` (${TRAVIS_OS_NAME}${prId}) to [${DEPLOY_URL}](${DEPLOY_URL})" \
     https://webhooks.gitter.im/e/cc99072d43b642c4673a
@@ -31,7 +44,7 @@ echo ""
 echo "******************************************************"
 echo ""
 echo "Finished building Mudlet ${VERSION}${MUDLET_VERSION_BUILD}"
-if [ ! -z "${DEPLOY_URL}" ]; then
+if [ -n "${DEPLOY_URL}" ]; then
   echo "Deployed the output to ${DEPLOY_URL}"
 fi
 echo ""

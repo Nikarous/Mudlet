@@ -327,20 +327,7 @@ jobs:
 
     - name: (Linux/macOS) package Mudlet
       if: (runner.os == 'Linux' || runner.os == 'macOS') && matrix.deploy == 'deploy'
-      run: >
-        docker run --rm
-        -v ${{github.workspace}}:${{github.workspace}}
-        -e BUILD_FOLDER=$BUILD_FOLDER
-        -e RUNNER_OS=$RUNNER_OS
-        -e DEPLOY=$DEPLOY
-        -e DBLSQD_USER=$DBLSQD_USER
-        -e DBLSQD_PASS=$DBLSQD_PASS
-        -e DEPLOY_KEY_PASS=$DEPLOY_KEY_PASS
-        -e MACOS_SIGNING_PASS=$MACOS_SIGNING_PASS
-        -e AC_USERNAME=$AC_USERNAME
-        -e AC_PASSWORD=$AC_PASSWORD
-        ubuntu:18.04
-        ${{github.workspace}}/CI/travis.after_success.sh
+      run: ${{github.workspace}}/CI/travis.after_success.sh
       env:
         BUILD_FOLDER: ${{runner.workspace}}/b/ninja
         RUNNER_OS: ${{runner.os}}
