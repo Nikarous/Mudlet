@@ -16,7 +16,7 @@ if { [ "${DEPLOY}" = "deploy" ]; } ||
 
   if [ "$TRAVIS_EVENT_TYPE" = "cron" ] && [ "${DEPLOY}" = "deploy" ]; then
     # instead of deployment, we upload to coverity for cron jobs
-    cd build
+    cd build || exit
     tar czf Mudlet.tgz cov-int
     ls -l Mudlet.tgz
     # we make this FAIL to not thrash our allowance if things go wrong!
@@ -128,8 +128,8 @@ if { [ "${DEPLOY}" = "deploy" ]; } ||
       downloadedfeed=$(mktemp)
       wget "https://feeds.dblsqd.com/MKMMR7HNSP65PquQQbiDIw/public-test-build/linux/x86_64" --output-document="$downloadedfeed"
       echo "=== Generating a changelog ==="
-      cd "${SOURCE_DIR}" || exit
-      changelog=$(lua "${SOURCE_DIR}/CI/generate-changelog.lua" --mode ptb --releasefile "${downloadedfeed}")
+      cd "${GITHUB_WORKSPACE}" || exit
+      changelog=$(lua "${GITHUB_WORKSPACE}/CI/generate-changelog.lua" --mode ptb --releasefile "${downloadedfeed}")
 
       echo "=== Creating release in Dblsqd ==="
       dblsqd release -a mudlet -c public-test-build -m "${changelog}" "${VERSION}${MUDLET_VERSION_BUILD}" || true

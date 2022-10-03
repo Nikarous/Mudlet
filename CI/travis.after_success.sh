@@ -11,7 +11,6 @@ if [ "${TRAVIS_OS_NAME}" = "linux" ] || [ "${RUNNER_OS}" = "Linux" ]; then
   echo "Deploy on Linux."
   docker run --rm \
     -v "$GITHUB_WORKSPACE":"$GITHUB_WORKSPACE" \
-    -v "$BUILD_FOLDER":"$BUILD_FOLDER" \
     -e BUILD_FOLDER="$BUILD_FOLDER" \
     -e RUNNER_OS="$RUNNER_OS" \
     -e DEPLOY="$DEPLOY" \
@@ -21,6 +20,14 @@ if [ "${TRAVIS_OS_NAME}" = "linux" ] || [ "${RUNNER_OS}" = "Linux" ]; then
     -e MACOS_SIGNING_PASS="$MACOS_SIGNING_PASS" \
     -e AC_USERNAME="$AC_USERNAME" \
     -e AC_PASSWORD="$AC_PASSWORD" \
+    -e MUDLET_VERSION_BUILD="$MUDLET_VERSION_BUILD" \
+    -e VERSION="$VERSION" \
+    -e GITHUB_REF="$GITHUB_REF" \
+    -e COMMIT_DATE="$COMMIT_DATE" \
+    -e GITHUB_ENV="$GITHUB_ENV" \
+    -e GITHUB_REPOSITORY="$GITHUB_REPOSITORY" \
+    -e GITHUB_RUN_ID="$GITHUB_RUN_ID" \
+    -e GITHUB_WORKSPACE="$GITHUB_WORKSPACE" \
     ubuntu:18.04 \
     "$GITHUB_WORKSPACE"/CI/travis.linux.after_success.sh;
   echo $?
